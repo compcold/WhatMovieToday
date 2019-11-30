@@ -1,5 +1,6 @@
 package com.example.whatmovietoday;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,7 +13,21 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
+
+/**
+ * COSC 3P97 Final Project
+ * Brian Jenkins 6063481, Jasdeep Grewal
+ *
+ */
 public class MainActivity extends AppCompatActivity {
+
+    private static List<User> userList;
+    private static UserDAO dao;
+    private static User user;
+    public static void setUser(User u){user = u;}
+    public static User getUser() {return user;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,15 +36,28 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        //Database
+        UserDB db = UserDB.getDatabase(this);
+        dao = db.getUserDAO();
+        userList = dao.getAll();
+
+        //Check if users exist
+        dao.nukeTable();
+        System.out.println(userList.size());
+
+        if (userList.size() > 0){
+            for (User u : userList){
+                if (u.lastLogin = true){
+                    user = u;
+                }
             }
-        });
+        }
+        else {
+            startActivity(new Intent(MainActivity.this,LoginSignup.class));
+        }
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
