@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnFavorite;
     private ImageButton btnExplore;
     private ImageButton btnRandom;
-    private ImageButton btnSearch;
 
 
 
@@ -98,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
             setupLogin();
         }
 
-        //Menu Stuff
+    }
+
+    protected void setupMenu(){
         btnMenuSearch = findViewById(R.id.btnMenuSearch);
         btnMenuSearch.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Search.class)));
 
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     toolbar.setTitle("Hi " + activeUser.nickName + "!");
                     setSupportActionBar(toolbar);
                     activeUser.id = dao.getId(tmpUser.username);
+                    setupMenu();
                 }
                 else {
                     Context context = getApplicationContext();
@@ -204,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
                         toolbar = findViewById(R.id.toolbar);
                         toolbar.setTitle("Hi " + activeUser.nickName + "!");
                         setSupportActionBar(toolbar);
+                        setupMenu();
                     }
                 }
                 else {
