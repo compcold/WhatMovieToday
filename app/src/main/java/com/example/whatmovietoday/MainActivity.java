@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private static List<User> userList;
     private static UserDAO dao;
     private static User user;
+    private Button btnSearch;
     public static void setUser(User u){user = u;}
     public static User getUser() {return user;}
 
@@ -33,9 +35,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+btnSearch = (Button)findViewById(R.id.btnSearch);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                searchPage();
+            }
+        });
         //Database
         UserDB db = UserDB.getDatabase(this);
         dao = db.getUserDAO();
@@ -57,7 +66,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+private void searchPage(){
+    Intent intent = new Intent(this, Search.class);
+    startActivity(intent);
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
