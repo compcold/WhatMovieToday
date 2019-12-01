@@ -101,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
         //Menu Stuff
         btnMenuSearch = findViewById(R.id.btnMenuSearch);
         btnMenuSearch.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Search.class)));
+
+        btnExplore = findViewById(R.id.btnExplore);
+        btnExplore.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Explore.class)));
+
+        btnFavorite = findViewById(R.id.btnExplore);
+        btnFavorite.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Favorite.class)));
+
+        btnRandom = findViewById(R.id.btnRandom);
+        btnRandom.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Random.class)));
     }
 
 
