@@ -1,5 +1,6 @@
 package com.example.whatmovietoday;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -35,7 +36,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class Search extends AppCompatActivity {
+public class Search extends Activity {
     private Button btnBack;
     private Button btnSearch;
     private Button btnLoad;

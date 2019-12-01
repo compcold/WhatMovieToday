@@ -19,10 +19,13 @@ public class User {
     @NonNull
     public String username;
 
-    //Salt + Hash
     @ColumnInfo(name = "password")
     @NonNull
     public String password;
+
+    @ColumnInfo(name = "nickName")
+    @NonNull
+    public String nickName;
 
     @ColumnInfo(name = "lastLogin")
     @NonNull
