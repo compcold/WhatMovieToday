@@ -22,5 +22,13 @@ public class MovieExploreObject {
         this.movieID=movieID;
     }
 
+    public void setID(String movieId){
+        this.movieID=movieId;
+    }
+
+    public String getID(){
+        return movieID;
+    }
+
 
 }

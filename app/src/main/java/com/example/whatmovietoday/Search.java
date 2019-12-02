@@ -21,6 +21,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
@@ -40,7 +41,7 @@ public class Search extends Activity {
     private Button btnBack;
     private Button btnSearch;
     private Button btnLoad;
-    private TextInputLayout input;
+    private TextInputEditText input;
     RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -54,7 +55,7 @@ public class Search extends Activity {
         setContentView(R.layout.activity_search);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        input = (TextInputLayout) findViewById(R.id.input);
+        input = findViewById(R.id.input);
         btnBack = (Button) findViewById(R.id.back);
         btnSearch = (Button) findViewById(R.id.search);
         btnLoad = (Button) findViewById(R.id.btnLoad);
@@ -63,6 +64,7 @@ public class Search extends Activity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         listItems = new ArrayList<>();
+        String searchFromMenu = MainActivity.search;
 
         //  JsonRequest(queue);
 //        for(int  i =0; i<4;i++){
@@ -75,6 +77,14 @@ public class Search extends Activity {
         //adapter = new MyAdapter(listItems, this);
         //recyclerView.setAdapter(adapter);
         //System.out.println(Arrays.deepToString(listItems.toArray()));
+
+        System.out.println(searchFromMenu);
+        if (!searchFromMenu.equals("")){
+            input.setText(searchFromMenu);
+            listItems.clear();
+            loadRecyclerViewData();
+            btnLoad.setVisibility(View.VISIBLE);
+        }
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +120,7 @@ public class Search extends Activity {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Data");
         progressDialog.show();
-        String x = URL_DATA + input.getEditText().getText().toString() + URL_DATA2;
+        String x = URL_DATA + input.getText().toString() + URL_DATA2;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, x, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {

@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.List;
 
 
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private static UserDAO dao;
     private static User activeUser = new User();
     private static User tmpUser;
+    private static Context cntx;
+    public static Context getContext(){return cntx;}
     public static void setUser(User u){activeUser = u;}
     public static User getUser() {return activeUser;}
     Toolbar toolbar;
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnFavorite;
     private ImageButton btnExplore;
     private ImageButton btnRandom;
+    private TextInputEditText txtSearchInput;
+    public static String search;
 
 
 
@@ -86,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 toolbar = findViewById(R.id.toolbar);
                 toolbar.setTitle("Hi " + activeUser.nickName + "!");
                 setSupportActionBar(toolbar);
+                setupMenu();
             }
             else {
                 setContentView(R.layout.activity_login);
@@ -96,17 +103,28 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_login);
             setupLogin();
         }
-
+        cntx = this;
     }
 
     protected void setupMenu(){
+        cntx = this;
         btnMenuSearch = findViewById(R.id.btnMenuSearch);
-        btnMenuSearch.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Search.class)));
+        txtSearchInput = findViewById(R.id.txtSearchInput);
+
+        btnMenuSearch.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 search = txtSearchInput.getText().toString();
+                 System.out.println(search);
+                 startActivity(new Intent(MainActivity.this, Search.class));
+             }
+         });
+
 
         btnExplore = findViewById(R.id.btnExplore);
         btnExplore.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Explore.class)));
 
-        btnFavorite = findViewById(R.id.btnExplore);
+        btnFavorite = findViewById(R.id.btnFavorite);
         btnFavorite.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Favorite.class)));
 
         btnRandom = findViewById(R.id.btnRandom);
