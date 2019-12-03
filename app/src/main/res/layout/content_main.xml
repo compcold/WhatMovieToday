@@ -109,7 +109,8 @@
                         android:layout_width="189dp"
                         android:layout_height="175dp"
                         android:background="#4B4E74"
-                        android:scaleType="fitEnd"
+                        android:paddingStart="10sp"
+                        android:scaleType="fitCenter"
                         app:srcCompat="@drawable/explore" />
 
                     <ImageButton
