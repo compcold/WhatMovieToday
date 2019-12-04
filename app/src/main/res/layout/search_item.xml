@@ -26,6 +26,19 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnRemove"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save to Favorites!" />
+
+            <TextView
+                android:id="@+id/hiddentxtID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:visibility="gone" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

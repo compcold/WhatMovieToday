@@ -4,11 +4,13 @@ public class ListItem {
     private String head;
     private String desc;
     private String imageUrl;
+    private String ID;
 
-    public ListItem(String head, String desc,String imageUrl) {
+    public ListItem(String head, String desc,String imageUrl, String ID) {
         this.head = head;
         this.desc = desc;
         this.imageUrl = imageUrl;
+        this.ID=ID;
     }
 
     public String getHead() {
@@ -22,6 +24,8 @@ public class ListItem {
     public String getImageUrl() {
         return imageUrl;
     }
+
+    public String getID(){return ID;}
 
     @Override
     public String toString() {

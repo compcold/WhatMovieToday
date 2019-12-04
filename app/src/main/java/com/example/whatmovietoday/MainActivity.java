@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,10 +33,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static List<User> userList;
-    private static UserDAO dao;
+    public static UserDAO uDao;
+    public static MovieDAO mDao;
     private static User activeUser = new User();
     private static User tmpUser;
     private static Context cntx;
+    public static UserDB db;
     public static Context getContext(){return cntx;}
     public static void setUser(User u){activeUser = u;}
     public static User getUser() {return activeUser;}
@@ -57,7 +60,10 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText txtSearchInput;
     public static String search;
 
-
+    public static MovieDAO getMovieDao(){
+        mDao = db.getMovieDAO();
+        return mDao;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +71,15 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Database
-        UserDB db = UserDB.getDatabase(this);
-        dao = db.getUserDAO();
-        userList = dao.getAll();
+        db = UserDB.getDatabase(this);
+        uDao = db.getUserDAO();
+        mDao = db.getMovieDAO();
+        userList = uDao.getAll();
+
 
         //Check if users exist
-        //dao.nukeTable();
+        //uDao.nukeTable();
+        //mDao.nukeTable();
         if (userList.size() > 0){
 
             //Check if user stayed logged in
@@ -121,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
          });
 
 
+
+
         btnExplore = findViewById(R.id.btnExplore);
         btnExplore.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Explore.class)));
 
@@ -152,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                     toolbar = findViewById(R.id.toolbar);
                     toolbar.setTitle("Hi " + activeUser.nickName + "!");
                     setSupportActionBar(toolbar);
-                    activeUser.id = dao.getId(tmpUser.username);
+                    activeUser.id = uDao.getId(tmpUser.username);
                     setupMenu();
                 }
                 else {
@@ -218,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     else {
-                        dao.insert(tmpUser);
+                        uDao.insert(tmpUser);
                         activeUser = tmpUser;
                         setContentView(R.layout.activity_main);
                         toolbar = findViewById(R.id.toolbar);
@@ -240,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         for (User u : l){
             if (user.username.equals(u.username) && user.password.equals(u.password)){
                 MainActivity.setUser(u);
-                dao.setLogin(u.username);
+                uDao.setLogin(u.username);
                 return true;
             }
         }
@@ -271,9 +282,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_logout) {
             //Set last login to 0
-            dao.removeLogin(activeUser.username);
+            uDao.removeLogin(activeUser.username);
             activeUser = null;
-            userList = dao.getAll();
+            userList = uDao.getAll();
             setContentView(R.layout.activity_login);
             setupLogin();
         }

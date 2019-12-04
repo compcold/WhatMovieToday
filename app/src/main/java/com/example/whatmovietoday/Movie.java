@@ -2,6 +2,7 @@ package com.example.whatmovietoday;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Query;
 
 /**
  * Used to keep track of the movie ID's saved

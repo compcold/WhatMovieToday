@@ -6,34 +6,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.android.volley.Cache;
-import com.android.volley.Network;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,7 +61,7 @@ public class Search extends Activity {
 //            listItems.add(listItem);
 //        }
 
-        //adapter = new MyAdapter(listItems, this);
+        //adapter = new SearchAdapter(listItems, this);
         //recyclerView.setAdapter(adapter);
         //System.out.println(Arrays.deepToString(listItems.toArray()));
 
@@ -130,14 +117,14 @@ public class Search extends Activity {
                     JSONArray array = jsonObject.getJSONArray("results");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject o = array.getJSONObject(i);
-                        ListItem item = new ListItem(o.getString("original_title"), o.getString("overview"), ("https://image.tmdb.org/t/p/w400" + o.getString("poster_path")));
+                        ListItem item = new ListItem(o.getString("original_title"), o.getString("overview"), ("https://image.tmdb.org/t/p/w400" + o.getString("poster_path")), o.getString("id"));
                         if (item.getHead().isEmpty()) {
-                            item = new ListItem(o.getString("original_name"), o.getString("overview"), ("https://image.tmdb.org/t/p/w400" + o.getString("poster_path")));
+                            item = new ListItem(o.getString("original_name"), o.getString("overview"), ("https://image.tmdb.org/t/p/w400" + o.getString("poster_path")), o.getString("id"));
                         }
                         System.out.println("this one:" + item);
                         listItems.add(item);
                     }
-                    adapter = new MyAdapter(listItems, getApplicationContext());
+                    adapter = new SearchAdapter(listItems, getApplicationContext());
                     recyclerView.setAdapter(adapter);
                 } catch (JSONException e) {
                     e.printStackTrace();

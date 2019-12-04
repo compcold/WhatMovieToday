@@ -47,12 +47,13 @@
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
-                    android:hint="Search movie, genre, actor, etc."
+                    android:hint="Search for a movie..."
                     android:textColor="#ffffff"
                     android:textColorHint="#ffffff"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/btnMenuSearch"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:maxLines = "1"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -110,7 +111,7 @@
                         android:layout_height="175dp"
                         android:background="#4B4E74"
                         android:paddingStart="10sp"
-                        android:scaleType="fitCenter"
+                        android:scaleType="fitXY"
                         app:srcCompat="@drawable/explore" />
 
                     <ImageButton
