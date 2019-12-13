@@ -8,165 +8,204 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TableLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center|center_horizontal|fill|center_vertical"
+    <ImageButton
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:layout_weight="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
+    <EditText
+        android:id="@+id/txtSearchInput"
+        android:layout_width="336dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="3dp"
+        android:ems="10"
+        android:hint="Search for a Movie!"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/search"
+        app:layout_constraintEnd_toStartOf="@+id/search"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:nextFocusForward="@+id/search"
+        android:imeOptions="actionSend"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="125dp"
+        app:columnCount="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/txtSearchInput"
+        app:rowCount="3">
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/btnMenuSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txtSearchInput"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/ic_menu_search" />
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtSearchInput"
-                    android:layout_width="324dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:hint="Search for a movie..."
-                    android:textColor="#ffffff"
-                    android:textColorHint="#ffffff"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/btnMenuSearch"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:maxLines = "1"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="33dp">
+            android:orientation="horizontal">
 
             <Space
-                android:layout_width="wrap_content"
-                android:layout_height="50dp" />
-        </TableRow>
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_weight="1" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <TableLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#4B4E74"
+                app:cardCornerRadius="30dp">
 
-                <TableRow
-                    android:layout_width="354dp"
-                    android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnExplore"
+                        android:layout_width="190dp"
+                        android:layout_height="175dp"
+                        android:layout_weight="1"
+                        android:background="#004B4E74"
+                        android:paddingStart="10sp"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/explore" />
 
                     <TextView
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
                         android:gravity="center"
                         android:text="Explore"
                         android:textSize="20sp" />
 
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="10dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#C8776488"
+                app:cardCornerRadius="30dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnRandom"
+                        android:layout_width="190dp"
+                        android:layout_height="175dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#00776488"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/random" />
+
                     <TextView
                         android:id="@+id/txtf"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="#00776488"
                         android:fontFamily="sans-serif-black"
                         android:gravity="center"
                         android:text="Find me a Movie!"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        app:layout_column="5"
+                        app:layout_row="0" />
 
-                </TableRow>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <TableRow
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="10dp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#9FA23636"
+                app:cardCornerRadius="30dp"
+                app:layout_columnSpan="2"
+                app:layout_rowSpan="2">
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
 
                     <ImageButton
-                        android:id="@+id/btnExplore"
-                        android:layout_width="189dp"
-                        android:layout_height="175dp"
-                        android:background="#4B4E74"
-                        android:paddingStart="10sp"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/explore" />
+                        android:id="@+id/btnFavorite"
+                        android:layout_width="392dp"
+                        android:layout_height="170dp"
+                        android:layout_gravity="center"
+                        android:layout_span="2"
 
-                    <ImageButton
-                        android:id="@+id/btnRandom"
-                        android:layout_width="198dp"
-                        android:layout_height="175dp"
-                        android:background="#C8776488"
-                        android:scaleType="fitEnd"
-                        app:srcCompat="@drawable/random" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        android:background="#007A4747"
+                        android:contentDescription="TODO"
+                        android:foregroundGravity="center_vertical|center|center_horizontal"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/favorites" />
 
                     <TextView
                         android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_span="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#007A4747"
                         android:fontFamily="sans-serif-black"
                         android:gravity="center"
                         android:text="Favorites"
                         android:textSize="20sp" />
-                </TableRow>
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/btnFavorite"
-                        android:layout_width="wrap_content"
-                        android:layout_height="175dp"
-                        android:layout_gravity="center"
-                        android:layout_span="2"
-                        android:backgroundTint="#D17A4747"
-                        android:foregroundGravity="center_vertical|center|center_horizontal"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/favorites" />
-                </TableRow>
+            </androidx.cardview.widget.CardView>
 
-            </TableLayout>
-        </TableRow>
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
 
-    </TableLayout>
+        </LinearLayout>
+
+
+    </androidx.gridlayout.widget.GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

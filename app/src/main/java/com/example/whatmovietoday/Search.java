@@ -2,9 +2,14 @@ package com.example.whatmovietoday;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,31 +26,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class Search extends Activity {
-    private Button btnBack;
-    private Button btnSearch;
-    private Button btnLoad;
-    private TextInputEditText input;
+public class Search extends AppCompatActivity {
+    private ImageButton btnSearch;
+    private TextView input;
     RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private List<ListItem> listItems;
     private static final String URL_DATA = "https://api.themoviedb.org/3/search/movie?api_key=e7f77194498797fa45d447e0d6e76c90&language=en-US&query=";
     private String URL_DATA2 = "&page=1";
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        RequestQueue queue = Volley.newRequestQueue(this);
         input = findViewById(R.id.input);
-        btnBack = (Button) findViewById(R.id.back);
-        btnSearch = (Button) findViewById(R.id.search);
-        btnLoad = (Button) findViewById(R.id.btnLoad);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        btnSearch = (ImageButton) findViewById(R.id.search);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -53,10 +57,19 @@ public class Search extends Activity {
         listItems = new ArrayList<>();
         String searchFromMenu = MainActivity.search;
 
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+
         //  JsonRequest(queue);
 //        for(int  i =0; i<4;i++){
 //            ListItem listItem = new ListItem(
-//                    "heading"+(i+1),"description"
+//                    "heading"+(i+1),"description"]
 //            );
 //            listItems.add(listItem);
 //        }
@@ -70,21 +83,33 @@ public class Search extends Activity {
             input.setText(searchFromMenu);
             listItems.clear();
             loadRecyclerViewData();
-            btnLoad.setVisibility(View.VISIBLE);
         }
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listItems.clear();
                 loadRecyclerViewData();
-                btnLoad.setVisibility(View.VISIBLE);
+            }
+        });
+
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    listItems.clear();
+                    loadRecyclerViewData();
+                }
+                return handled;
+            }
+        });
+
+        /*
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
         btnLoad.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +126,13 @@ public class Search extends Activity {
                 btnLoad.setVisibility(View.VISIBLE);
             }
         });
+      */
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void loadRecyclerViewData() {

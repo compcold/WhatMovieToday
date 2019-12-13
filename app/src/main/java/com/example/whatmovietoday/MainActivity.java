@@ -1,5 +1,6 @@
 package com.example.whatmovietoday;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +8,11 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -17,7 +20,6 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btnFavorite;
     private ImageButton btnExplore;
     private ImageButton btnRandom;
-    private TextInputEditText txtSearchInput;
+    private TextView txtSearchInput;
     public static String search;
 
     public static MovieDAO getMovieDao(){
@@ -117,29 +119,39 @@ public class MainActivity extends AppCompatActivity {
 
     protected void setupMenu(){
         cntx = this;
-        btnMenuSearch = findViewById(R.id.btnMenuSearch);
+        btnMenuSearch = findViewById(R.id.search);
         txtSearchInput = findViewById(R.id.txtSearchInput);
 
         btnMenuSearch.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  search = txtSearchInput.getText().toString();
-                 System.out.println(search);
                  startActivity(new Intent(MainActivity.this, Search.class));
              }
          });
 
+        txtSearchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    search = txtSearchInput.getText().toString();
+                    startActivity(new Intent(MainActivity.this, Search.class));
+                }
+                return handled;
+            }
+        });
 
 
 
         btnExplore = findViewById(R.id.btnExplore);
-        btnExplore.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Explore.class)));
+        btnExplore.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Explore.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle()));
 
         btnFavorite = findViewById(R.id.btnFavorite);
-        btnFavorite.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Favorite.class)));
+        btnFavorite.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Favorite.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle()));
 
         btnRandom = findViewById(R.id.btnRandom);
-        btnRandom.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Random.class)));
+        btnRandom.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Random.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle()));
     }
 
 

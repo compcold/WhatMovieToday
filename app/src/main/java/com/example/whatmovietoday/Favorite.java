@@ -3,6 +3,9 @@ package com.example.whatmovietoday;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
@@ -14,33 +17,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Favorite extends Activity {
+public class Favorite extends AppCompatActivity {
 
     RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private List<ListItem> listItems;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
-
         recyclerView =  findViewById(R.id.recFavorite);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
+
         recyclerView.setLayoutManager(layoutManager);
         listItems = new ArrayList<>();
 
         getFavorites();
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 
     public void getFavorites(){
         User u = MainActivity.getUser();
-        List<Movie> mList = MainActivity.getMovieDao().getUserSaves(u.id);
-        adapter = new SearchAdapter(listItems, getApplicationContext());
-        recyclerView.setAdapter(adapter);
+        List<Movie> mList = MainActivity.db.getMovieDAO().getUserSaves(u.id);
         RequestQueue queue = Volley.newRequestQueue(this);
 
         ProgressDialog progressDialog = new ProgressDialog(this);
@@ -71,11 +88,17 @@ public class Favorite extends Activity {
                         ListItem item = new ListItem(title, desc, poster, id);
                         listItems.add(item);
 
+                        adapter = new FavoriteAdapter(listItems, getApplicationContext());
+                        recyclerView.setAdapter(adapter);
                     }, error -> error.printStackTrace());
             queue.add(jsonObjectRequest);
         }
         progressDialog.dismiss();
-        adapter = new FavoriteAdapter(listItems, getApplicationContext());
-        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 }
