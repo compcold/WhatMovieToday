@@ -30,7 +30,6 @@ import java.util.List;
  * This MainActivity houses the main menu and login/signup
  * functionality. It also holds all the setting button
  * properties.
- *
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -163,6 +162,11 @@ public class MainActivity extends AppCompatActivity {
         txtPasswordSign = findViewById(R.id.txtPassword);
         txtSignup = findViewById(R.id.txtSignup);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Welcome!");
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,6 +209,16 @@ public class MainActivity extends AppCompatActivity {
         txtNick = findViewById(R.id.txtNick);
         txtUsernameSign = findViewById(R.id.txtUsername);
         txtPasswordSign = findViewById(R.id.txtPassword);
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("You're making the right choice!");
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -282,7 +296,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -293,13 +306,32 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
-            //Set last login to 0
-            uDao.removeLogin(activeUser.username);
-            activeUser = null;
-            userList = uDao.getAll();
-            setContentView(R.layout.activity_login);
-            setupLogin();
+            if(activeUser != null ) {
+                //Set last login to 0
+                uDao.removeLogin(activeUser.username);
+                activeUser = null;
+                userList = uDao.getAll();
+                setContentView(R.layout.activity_login);
+                setupLogin();
+            }
+            else {
+                finish();
+                System.exit(0);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed(){
+        String s = this.findViewById(android.R.id.content).toString();
+        System.out.println(s);
+        if (s.equals("activity_signup")){
+            setContentView(R.layout.activity_login);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
 }
+
