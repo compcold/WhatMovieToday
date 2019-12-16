@@ -4,31 +4,31 @@ import android.widget.ImageButton;
 
 public class MovieExploreObject {
 
-    //Api Variables
-    private String movieID;
-    private String imageID;
-    private String descID;
-
     //UI Variables
     private String movieTitle;
-    private ImageButton btnAccept;
-    private ImageButton btnDecline;
     private String movieDesc;
-    private String movieYear;
-    private String movieActors;
+    private String moviePoster;
+    private String movieID;
 
-
-    MovieExploreObject (String movieID){
+    public void setDetails(String movieTitle, String movieDesc, String moviePoster, String movieID){
+        this.movieDesc=movieDesc;
+        this.moviePoster=moviePoster;
+        this.movieTitle=movieTitle;
         this.movieID=movieID;
     }
 
-    public void setID(String movieId){
-        this.movieID=movieId;
+    public String getTitle(){
+        return movieTitle;
     }
 
-    public String getID(){
-        return movieID;
+    public String getDesc(){
+        return movieDesc;
     }
 
+    public String getPoster(){
+        return moviePoster;
+    }
+
+    public String getID(){return movieID;}
 
 }

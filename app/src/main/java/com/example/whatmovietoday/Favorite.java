@@ -58,8 +58,10 @@ public class Favorite extends AppCompatActivity {
 
     public void getFavorites(){
         User u = MainActivity.getUser();
+        UserDAO d = MainActivity.uDao;
+        System.out.println(u.username + " " + u.id);
         List<Movie> mList = MainActivity.db.getMovieDAO().getUserSaves(u.id);
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = MainActivity.getFavorite();
 
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Data");
@@ -95,11 +97,5 @@ public class Favorite extends AppCompatActivity {
             queue.add(jsonObjectRequest);
         }
         progressDialog.dismiss();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
     }
 }

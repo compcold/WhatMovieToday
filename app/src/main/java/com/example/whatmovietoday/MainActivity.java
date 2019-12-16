@@ -3,11 +3,10 @@ package com.example.whatmovietoday;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +16,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.textfield.TextInputEditText;
-
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,14 +35,25 @@ public class MainActivity extends AppCompatActivity {
     private static List<User> userList;
     public static UserDAO uDao;
     public static MovieDAO mDao;
-    private static User activeUser = new User();
+    private static User activeUser;
     private static User tmpUser;
     private static Context cntx;
     public static UserDB db;
     public static Context getContext(){return cntx;}
     public static void setUser(User u){activeUser = u;}
     public static User getUser() {return activeUser;}
+    public static ArrayList<MovieExploreObject> randomMovies;
+    public static List<String> genres;
     Toolbar toolbar;
+
+    //Volley Requests
+    private static RequestQueue searchQueue;
+    private static RequestQueue exploreQueue;
+    private static RequestQueue favoriteQueue;
+
+    public static RequestQueue getSearch(){return searchQueue;}
+    public static RequestQueue getExplore(){return exploreQueue;}
+    public static RequestQueue getFavorite(){return favoriteQueue;}
 
     //SignUp / Login
     private Button btnLogin;
@@ -71,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
 
+        //Instantiate Queues
+        searchQueue = Volley.newRequestQueue(this);
+        exploreQueue = Volley.newRequestQueue(this);
+        favoriteQueue = Volley.newRequestQueue(this);
+
         //Database
         db = UserDB.getDatabase(this);
         uDao = db.getUserDAO();
@@ -83,21 +98,23 @@ public class MainActivity extends AppCompatActivity {
         //mDao.nukeTable();
         if (userList.size() > 0){
 
+            List<User> testLst = uDao.getAll();
+            for (int i=0; i<userList.size(); i++){
+                System.out.println(testLst.get(i).username + " " + testLst.get(i).id);
+            }
+
             //Check if user stayed logged in
             boolean userLoggedIn = false;
-            User log = new User();
-
             for (User u : userList){
                 if (u.lastLogin == true){
                     userLoggedIn = true;
-                    log = u;
+                    activeUser = u;
                     break;
                 }
             }
 
             //Go to login if user does not exist
             if (userLoggedIn == true){
-                activeUser = log;
                 setContentView(R.layout.activity_main);
                 toolbar = findViewById(R.id.toolbar);
                 toolbar.setTitle("Hi " + activeUser.nickName + "!");
@@ -114,20 +131,23 @@ public class MainActivity extends AppCompatActivity {
             setupLogin();
         }
         cntx = this;
+
+        //Generate Some FindAMovie Movies Real Quick
+        newMovieList();
     }
 
-    protected void setupMenu(){
+    protected void setupMenu() {
         cntx = this;
         btnMenuSearch = findViewById(R.id.search);
         txtSearchInput = findViewById(R.id.txtSearchInput);
 
         btnMenuSearch.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 search = txtSearchInput.getText().toString();
-                 startActivity(new Intent(MainActivity.this, Search.class));
-             }
-         });
+            @Override
+            public void onClick(View v) {
+                search = txtSearchInput.getText().toString();
+                startActivity(new Intent(MainActivity.this, Search.class));
+            }
+        });
 
         txtSearchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -142,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         btnExplore = findViewById(R.id.btnExplore);
         btnExplore.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Explore.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle()));
 
@@ -150,7 +169,23 @@ public class MainActivity extends AppCompatActivity {
         btnFavorite.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Favorite.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle()));
 
         btnRandom = findViewById(R.id.btnRandom);
-        btnRandom.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, Random.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle()));
+        btnRandom.setOnClickListener(new View.OnClickListener() {
+
+             @Override
+             public void onClick(View v) {
+                if (mDao.getUserSaves(activeUser.id).size() < 1) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Use the 'Search' or 'Explore' tools to add Favorites!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                 else {
+                    startActivity(new Intent(MainActivity.this, FindAMovie.class));
+                 }
+             }
+         });
     }
 
 
@@ -163,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
         txtSignup = findViewById(R.id.txtSignup);
 
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Welcome!");
 
@@ -212,8 +246,16 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
-
         setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_login);
+                setupLogin();
+            }
+        });
+
         getSupportActionBar().setTitle("You're making the right choice!");
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -257,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         uDao.insert(tmpUser);
                         activeUser = tmpUser;
+                        activeUser.id = uDao.getId(tmpUser.username);
                         setContentView(R.layout.activity_main);
                         toolbar = findViewById(R.id.toolbar);
                         toolbar.setTitle("Hi " + activeUser.nickName + "!");
@@ -294,6 +337,19 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
+    public static void newMovieList(){
+        MovieExploreHelper.newRandomMovies();
+        randomMovies = MovieExploreHelper.mList;
+    }
+
+    private void openURL(String url){
+        if (url != null) {
+            Uri uri = Uri.parse(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -315,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
                 setupLogin();
             }
             else {
-                finish();
+                finishAffinity();
                 System.exit(0);
             }
         }
@@ -324,14 +380,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        String s = this.findViewById(android.R.id.content).toString();
-        System.out.println(s);
-        if (s.equals("activity_signup")){
-            setContentView(R.layout.activity_login);
-        }
-        else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 }
 

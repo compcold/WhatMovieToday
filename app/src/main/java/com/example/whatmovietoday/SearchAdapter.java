@@ -68,12 +68,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
 
     public void saveMovie(String id){
         User u = MainActivity.getUser();
+        int uId = MainActivity.uDao.getId(u.username);
+
         Movie selectedMovie = new Movie();
         selectedMovie.id = Integer.parseInt(id);
-        selectedMovie.userId = u.id;
+        selectedMovie.userId = uId;
 
         dao = MainActivity.mDao;
-        List<Movie> tmpTable = dao.getUserSaves(u.id);
+        List<Movie> tmpTable = dao.getUserSaves(uId);
 
         Boolean exists = false;
         for (Movie m : tmpTable){

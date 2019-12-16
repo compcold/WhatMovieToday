@@ -1,42 +1,59 @@
 package com.example.whatmovietoday;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+import com.mindorks.placeholderview.SwipeDecor;
+import com.mindorks.placeholderview.SwipePlaceHolderView;
 
 
 public class Explore extends AppCompatActivity {
 
-    private ViewPager viewMovie;
-    private MovieAdapter adapter;
     private androidx.appcompat.widget.Toolbar toolbar;
+    private static SwipePlaceHolderView mSwipeView;
+    private Context mContext;
+    private int randomMoviePage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
 
-        viewMovie = findViewById(R.id.viewMovie);
-        MovieExploreObject m = new MovieExploreObject("3");
-        adapter = new MovieAdapter(this,m);
-        viewMovie.setAdapter(adapter);
-
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Explore");
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        mSwipeView = findViewById(R.id.swipeView);
+        mContext = getApplicationContext();
+
+        mSwipeView.getBuilder()
+                .setDisplayViewCount(3)
+                .setSwipeDecor(new SwipeDecor()
+                        .setPaddingTop(5)
+                        .setRelativeScale(0.01f));
+
+
+        System.out.println(MovieExploreHelper.mList.size());
+        for (int i = 0; i< MovieExploreHelper.mList.size(); i++){
+            System.out.println(MainActivity.randomMovies.get(i).getTitle());
+            mSwipeView.addView(new ExploreCard(mContext, MainActivity.randomMovies.get(i), mSwipeView));
         }
+    }
 
+    public static void likeCard(){
+        mSwipeView.doSwipe(true);
+    }
 
+    public static void dislikeCard(){
+        mSwipeView.doSwipe(false);
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+    public boolean onSupportNavigateUp() {
+        MainActivity.newMovieList();
+        onBackPressed();
+        return true;
     }
 }
+

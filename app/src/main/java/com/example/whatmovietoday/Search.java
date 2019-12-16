@@ -1,9 +1,7 @@
 package com.example.whatmovietoday;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,22 +10,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.textfield.TextInputEditText;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class Search extends AppCompatActivity {
     private ImageButton btnSearch;
+    private Button btnLoad;
     private TextView input;
     RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -58,6 +52,7 @@ public class Search extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         listItems = new ArrayList<>();
         String searchFromMenu = MainActivity.search;
+        btnLoad = findViewById(R.id.btnLoad);
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
@@ -68,18 +63,6 @@ public class Search extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-
-        //  JsonRequest(queue);
-//        for(int  i =0; i<4;i++){
-//            ListItem listItem = new ListItem(
-//                    "heading"+(i+1),"description"]
-//            );
-//            listItems.add(listItem);
-//        }
-
-        //adapter = new SearchAdapter(listItems, this);
-        //recyclerView.setAdapter(adapter);
-        //System.out.println(Arrays.deepToString(listItems.toArray()));
 
         System.out.println(searchFromMenu);
         if (!searchFromMenu.equals("")){
@@ -118,13 +101,7 @@ public class Search extends AppCompatActivity {
             }
         });
 
-        /*
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
         btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +116,7 @@ public class Search extends AppCompatActivity {
                 btnLoad.setVisibility(View.VISIBLE);
             }
         });
-      */
+
     }
 
     @Override
@@ -152,7 +129,7 @@ public class Search extends AppCompatActivity {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Data");
         progressDialog.show();
-        String x = URL_DATA + input.getText().toString() + URL_DATA2;
+        String x = URL_DATA + input.getText().toString().replace(' ', '+') + URL_DATA2;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, x, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -176,7 +153,7 @@ public class Search extends AppCompatActivity {
                 }
             }
         }, error -> System.out.println("fail"));
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = MainActivity.getSearch();
         requestQueue.add(stringRequest);
     }
 }

@@ -42,12 +42,18 @@ dependencies {
     compile 'com.android.volley:volley:1.1.1'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
 
-    //noinspection GradleCompatible
     compile 'androidx.legacy:legacy-support-core-ui:1.0.0'
-    //noinspection GradleCompatible
     compile 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    compile 'com.mindorks.android:placeholderview:1.0.3'
+    annotationProcessor 'com.mindorks.android:placeholderview-compiler:1.0.3'
+
+    compile 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    compile 'androidx.appcompat:appcompat:1.0.0'
+    compile 'androidx.recyclerview:recyclerview:1.0.0'
 
 }
