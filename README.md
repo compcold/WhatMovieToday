@@ -11,6 +11,6 @@ Key Features:
   -All possible using The Movie Database public API: https://developers.themoviedb.org/3/getting-started/introduction
   
 Screens: 
-![](images/filename%20login.png)
-![](images/filename%20main.png)
-![](images/filename%20explore.png)
+![](Screenshots/filename%20login.png)
+![](Screenshots/filename%20main.png)
+![](Screenshots/filename%20explore.png)
