@@ -24,7 +24,6 @@ import java.util.List;
 
 /**
  * COSC 3P97 Final Project
- * Brian Jenkins 6063481, Jasdeep Grewal
  *
  * This MainActivity houses the main menu and login/signup
  * functionality. It also holds all the setting button
