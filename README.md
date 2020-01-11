@@ -18,7 +18,7 @@ Key Features
 Credits 
 -------------------
   - Only possible with the help of 'The Movie Database' public API: https://developers.themoviedb.org/3/getting-started/introduction
-  - Consult the build.gradle file for a list of all API's used 
+  - Consult the app/build.gradle file for a list of all API's used 
 <br></br>
 
 Screenshots 
