@@ -8,7 +8,7 @@ Key Features:
   -Favorites list   -Random movie generator based on favorite movie list  
   -Explore movies from a random pool  
   -Only possible with the help of The Movie Database public API: https://developers.themoviedb.org/3/getting-started/introduction  
-    
+  
 <img src="Screenshots/login.png" width="275">
 <img src="Screenshots/main.png" width="275">
 <img src="Screenshots/explore.png" width="275">
