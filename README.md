@@ -10,6 +10,6 @@ Key Features:
   -Only possible with the help of The Movie Database public API: https://developers.themoviedb.org/3/getting-started/introduction  
   
 Screens:   
-![](Screenshots/filename%20login.png)
-![](Screenshots/filename%20main.png)
-![](Screenshots/filename%20explore.png)  
+<img src="Screenshots/login.png" width="300">
+<img src="Screenshots/main.png" width="300">
+<img src="Screenshots/explore.png" width="300">
